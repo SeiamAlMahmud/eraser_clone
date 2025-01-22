@@ -6,10 +6,10 @@ const Header = () => {
     <div>
         <header className="bg-black">
   <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
-    <Link className="block text-teal-600" href="/">
-      <span className="sr-only">Home</span>
+    <Link className=" text-teal-600 flex items-center flex-nowrap gap-4" href="/">
       <Image
        src={"/logo.png"} width={50} height={50} alt="logo" />
+      <span className=" text-white font-extrabold text-xl  hover:text-gray-500/75">Home</span>
     </Link>
 
     <div className="flex flex-1 items-center justify-end md:justify-between">
