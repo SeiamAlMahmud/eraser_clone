@@ -1,8 +1,12 @@
+import Header from '@/app/_components/Header'
 import React from 'react'
 
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <div>
+      <Header />
+      Dashboard
+      </div>
   )
 }
 
