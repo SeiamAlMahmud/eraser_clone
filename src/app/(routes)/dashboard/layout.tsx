@@ -6,25 +6,32 @@ import { api } from '../../../../convex/_generated/api';
 import { useRouter } from 'next/navigation';
 import SideNav from './_components/SideNav';
 
+interface User {
+  picture: string | null;
+  given_name: string | null;
+  family_name: string | null;
+  email: string | null;
+}
+
 const DashboardLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
   const convex = useConvex();
-  const { user }: any = useKindeBrowserClient();
+  const { user }: { user: User | null } = useKindeBrowserClient();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   console.log(user, 'user');
 
   const checkTeam = useCallback(async () => {
-    if (!user) {
+    if (!user || !user.email) {
       router.push('/api/auth/login');
       return;
     }
 
     const userResult = await convex.query(api.user.getUser, {
-      email: user?.email,
+      email: user.email,
     });
     if (!userResult?.length) {
       router.push('/api/auth/login');
@@ -32,7 +39,7 @@ const DashboardLayout = ({
     }
 
     const result = await convex.query(api.teams.getTeam, {
-      email: user?.email,
+      email: user.email,
     });
     console.log(result, 'result5454');
     if (!result?.length) {

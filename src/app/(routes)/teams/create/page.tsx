@@ -9,8 +9,12 @@ import { useConvex, useMutation } from 'convex/react';
 import { api } from '../../../../../convex/_generated/api';
 import { toast } from 'sonner';
 
+interface User {
+  email: string | null;
+}
+
 const CreateTeam = () => {
-  const { user }: any = useKindeBrowserClient();
+  const { user }: { user: User | null } = useKindeBrowserClient();
   const router = useRouter();
   const convex = useConvex();
   const [teamName, setTeamName] = useState('');
@@ -30,12 +34,12 @@ const CreateTeam = () => {
   }, [user, router]);
 
   const createNewTeam = async () => {
-    if (!user) {
+    if (!user || !user.email) {
       router.push('/api/auth/login');
       return;
     }
 
-    const result = await convex.query(api.user.getUser, { email: user?.email });
+    const result = await convex.query(api.user.getUser, { email: user.email });
     if (!result?.length) {
       router.push('/api/auth/login');
       return;
@@ -43,8 +47,8 @@ const CreateTeam = () => {
 
     createTeam({
       teamName: teamName,
-      createdBy: user?.email,
-    }).then((res) => {
+      createdBy: user.email,
+    }).then(() => {
       toast('Team created successfully');
       router.push('/dashboard');
     });

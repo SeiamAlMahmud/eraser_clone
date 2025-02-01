@@ -8,7 +8,14 @@ import {
 import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs';
 import { Separator } from '@/components/ui/separator';
 
-const SideNavTopSection = ({ user }) => {
+interface User {
+  picture: string | null;
+  given_name: string | null;
+  family_name: string | null;
+  email: string | null;
+}
+
+const SideNavTopSection = ({ user }: { user: User | null }) => {
   const menus = [
     {
       id: 1,
@@ -67,17 +74,17 @@ const SideNavTopSection = ({ user }) => {
             {user && (
               <div className="flex items-center gap-3 cursor-pointer">
                 <Image
-                  src={user?.picture}
-                  alt={user?.given_name}
+                  src={user.picture || '/default-avatar.png'}
+                  alt={user.given_name || 'User'}
                   height={25}
                   width={25}
                   className="bg-teal-500 rounded-full"
                 />
                 <div className="mt-2 flex items-start flex-col">
                   <h2 className="text-[14px] font-bold">
-                    {user?.given_name} {user?.family_name}
+                    {user.given_name} {user.family_name}
                   </h2>
-                  <h2 className="text-sm text-gray-400">{user?.email}</h2>
+                  <h2 className="text-sm text-gray-400">{user.email}</h2>
                 </div>
               </div>
             )}
