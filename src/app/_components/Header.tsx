@@ -20,8 +20,14 @@ const Header = async () => {
             className=" text-teal-600 flex items-center flex-nowrap gap-4"
             href="/"
           >
-            <Image src={'/logo.png'} width={50} height={50} alt="logo" />
-            <span className=" text-white font-extrabold text-xl  hover:text-gray-500/75">
+            <Image
+              src={'/logo.png'}
+              width={50}
+              height={50}
+              alt="logo"
+              className="rotate-45"
+            />
+            <span className=" text-white font-extrabold text-xl  hover:text-gray-500/75 ">
               Home
             </span>
           </Link>

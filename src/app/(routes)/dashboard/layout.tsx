@@ -4,6 +4,7 @@ import { useConvex } from 'convex/react';
 import React, { useEffect, useCallback, useState } from 'react';
 import { api } from '../../../../convex/_generated/api';
 import { useRouter } from 'next/navigation';
+import SideNav from './_components/SideNav';
 
 const DashboardLayout = ({
   children,
@@ -22,7 +23,9 @@ const DashboardLayout = ({
       return;
     }
 
-    const userResult = await convex.query(api.user.getUser, { email: user?.email });
+    const userResult = await convex.query(api.user.getUser, {
+      email: user?.email,
+    });
     if (!userResult?.length) {
       router.push('/api/auth/login');
       return;
@@ -55,7 +58,16 @@ const DashboardLayout = ({
     return <div>Loading...</div>;
   }
 
-  return <div>{children}</div>;
+  return (
+    <div>
+      <div className=" grid grid-cols-4">
+        <div>
+          <SideNav />
+        </div>
+        <div className="col-span-3">{children}</div>
+      </div>
+    </div>
+  );
 };
 
 export default DashboardLayout;
