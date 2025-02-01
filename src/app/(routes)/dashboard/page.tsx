@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import { api } from '../../../../convex/_generated/api';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 
-
 const Dashboard = () => {
   const convex = useConvex();
   const { user }: any = useKindeBrowserClient();

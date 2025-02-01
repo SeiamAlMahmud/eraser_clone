@@ -11,7 +11,7 @@ const Header = async () => {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
-  console.log(user);
+  // console.log(user);
   return (
     <div>
       <header className="bg-black">
