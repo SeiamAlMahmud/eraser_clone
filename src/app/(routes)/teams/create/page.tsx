@@ -1,19 +1,58 @@
 'use client';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { Boxes } from 'lucide-react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { useConvex } from 'convex/react';
+import { useConvex, useMutation } from 'convex/react';
 import { api } from '../../../../../convex/_generated/api';
+import { toast } from 'sonner';
 
 const CreateTeam = () => {
   const { user }: any = useKindeBrowserClient();
   const router = useRouter();
   const convex = useConvex();
-  const [loading, setLoading] = useState(true);
   const [teamName, setTeamName] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  const createTeam = useMutation(api.teams.createTeam);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!user) {
+        router.push('/api/auth/login?redirect=/teams/create');
+      } else {
+        setLoading(false);
+      }
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [user, router]);
+
+  const createNewTeam = async () => {
+    if (!user) {
+      router.push('/api/auth/login');
+      return;
+    }
+
+    const result = await convex.query(api.user.getUser, { email: user?.email });
+    if (!result?.length) {
+      router.push('/api/auth/login');
+      return;
+    }
+
+    createTeam({
+      teamName: teamName,
+      createdBy: user?.email,
+    }).then((res) => {
+      toast('New Team Name has been created.');
+      router.push('/dashboard');
+    });
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="px-6 lg:px-14 my-14">
@@ -42,6 +81,7 @@ const CreateTeam = () => {
         <Button
           disabled={!(teamName && teamName?.length > 0)}
           className="mt-4 bg-blue-500"
+          onClick={createNewTeam}
         >
           Create Team
         </Button>

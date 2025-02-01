@@ -14,10 +14,17 @@ const DashboardLayout = ({
   const { user }: any = useKindeBrowserClient();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  console.log(user, 'user');
 
   const checkTeam = useCallback(async () => {
     if (!user) {
-      router.push('/api/auth/login?');
+      router.push('/api/auth/login');
+      return;
+    }
+
+    const userResult = await convex.query(api.user.getUser, { email: user?.email });
+    if (!userResult?.length) {
+      router.push('/api/auth/login');
       return;
     }
 
@@ -33,8 +40,16 @@ const DashboardLayout = ({
   }, [convex, router, user]);
 
   useEffect(() => {
-    checkTeam();
-  }, [checkTeam]);
+    const timer = setTimeout(() => {
+      if (user) {
+        checkTeam();
+      } else {
+        router.push('/api/auth/login');
+      }
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [checkTeam, user, router]);
 
   if (loading) {
     return <div>Loading...</div>;
