@@ -1,7 +1,11 @@
-import Image from "next/image";
-import Link from "next/link";
-import { RegisterLink, LoginLink, LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import Image from 'next/image';
+import Link from 'next/link';
+import {
+  RegisterLink,
+  LoginLink,
+  LogoutLink,
+} from '@kinde-oss/kinde-auth-nextjs/components';
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 
 const Header = async () => {
   const { getUser } = getKindeServerSession();
@@ -12,31 +16,72 @@ const Header = async () => {
     <div>
       <header className="bg-black">
         <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
-          <Link className=" text-teal-600 flex items-center flex-nowrap gap-4" href="/">
-            <Image src={"/logo.png"} width={50} height={50} alt="logo" />
-            <span className=" text-white font-extrabold text-xl  hover:text-gray-500/75">Home</span>
+          <Link
+            className=" text-teal-600 flex items-center flex-nowrap gap-4"
+            href="/"
+          >
+            <Image src={'/logo.png'} width={50} height={50} alt="logo" />
+            <span className=" text-white font-extrabold text-xl  hover:text-gray-500/75">
+              Home
+            </span>
           </Link>
 
           <div className="flex flex-1 items-center justify-end md:justify-between">
             <nav aria-label="Global" className="hidden md:block">
               <ul className="flex items-center gap-6 text-sm">
                 <li>
-                  <a className="text-white transition hover:text-gray-500/75" href="#"> About </a>
+                  <a
+                    className="text-white transition hover:text-gray-500/75"
+                    href="#"
+                  >
+                    {' '}
+                    About{' '}
+                  </a>
                 </li>
                 <li>
-                  <a className="text-white transition hover:text-gray-500/75" href="#"> Careers </a>
+                  <a
+                    className="text-white transition hover:text-gray-500/75"
+                    href="#"
+                  >
+                    {' '}
+                    Careers{' '}
+                  </a>
                 </li>
                 <li>
-                  <a className="text-white transition hover:text-gray-500/75" href="#"> History </a>
+                  <a
+                    className="text-white transition hover:text-gray-500/75"
+                    href="#"
+                  >
+                    {' '}
+                    History{' '}
+                  </a>
                 </li>
                 <li>
-                  <a className="text-white transition hover:text-gray-500/75" href="#"> Services </a>
+                  <a
+                    className="text-white transition hover:text-gray-500/75"
+                    href="#"
+                  >
+                    {' '}
+                    Services{' '}
+                  </a>
                 </li>
                 <li>
-                  <a className="text-white transition hover:text-gray-500/75" href="#"> Projects </a>
+                  <a
+                    className="text-white transition hover:text-gray-500/75"
+                    href="#"
+                  >
+                    {' '}
+                    Projects{' '}
+                  </a>
                 </li>
                 <li>
-                  <a className="text-white transition hover:text-gray-500/75" href="#"> Blog </a>
+                  <a
+                    className="text-white transition hover:text-gray-500/75"
+                    href="#"
+                  >
+                    {' '}
+                    Blog{' '}
+                  </a>
                 </li>
               </ul>
             </nav>
@@ -75,7 +120,11 @@ const Header = async () => {
                   stroke="currentColor"
                   strokeWidth="2"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
               </button>
             </div>
