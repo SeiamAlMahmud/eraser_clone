@@ -1,9 +1,11 @@
 import React from 'react'
 
-const page = () => {
+const CreateTeam = () => {
   return (
-    <div>page</div>
+    <div>
+      5454
+    </div>
   )
 }
 
-export default page
+export default CreateTeam
