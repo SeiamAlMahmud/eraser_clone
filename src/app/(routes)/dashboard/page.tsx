@@ -17,9 +17,9 @@ const Dashboard = () => {
       checkUser();
     }
   }, [user]);
-  
+
   const checkUser = async () => {
-    const result = await convex.query(api.user.getUser,{ email: user?.email });
+    const result = await convex.query(api.user.getUser, { email: user?.email });
     // console.log(result, "65654");
     if (!result?.length) {
       createUser({
@@ -30,7 +30,7 @@ const Dashboard = () => {
         // console.log(res,"res")
       });
     }
-  }
+  };
   return <div>page</div>;
 };
 
