@@ -16,14 +16,17 @@ const DashboardLayout = ({
   const [loading, setLoading] = useState(true);
 
   const checkTeam = useCallback(async () => {
-    if (user) {
-      const result = await convex.query(api.teams.getTeam, { email: user?.email });
-      console.log(result, 'result5454');
-      if (!result?.length) {
-        router.push('/teams/create');
-      } else {
-        setLoading(false);
-      }
+    if (!user) {
+      router.push('/api/auth/login?');
+      return;
+    }
+
+    const result = await convex.query(api.teams.getTeam, { email: user?.email });
+    console.log(result, 'result5454');
+    if (!result?.length) {
+      router.push('/teams/create');
+    } else {
+      setLoading(false);
     }
   }, [convex, router, user]);
 
