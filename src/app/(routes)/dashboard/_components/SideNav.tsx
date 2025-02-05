@@ -1,7 +1,8 @@
+import SideNavBottomSection from './SideNavBottomSection';
 import SideNavTopSection from './SideNavTopSection';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 
-interface User {
+export interface User {
   picture: string | null;
   given_name: string | null;
   family_name: string | null;
@@ -10,9 +11,16 @@ interface User {
 
 const SideNav = () => {
   const { user }: { user: User | null } = useKindeBrowserClient();
+
+ 
   return (
-    <div className="bg-gray-100 h-screen fixed w-64 border-r p-6">
-      <SideNavTopSection user={user} />
+    <div className=" h-screen fixed w-64 border-r p-6 flex flex-col">
+      <div className='flex-1'>
+        <SideNavTopSection user={user} />
+      </div>
+      <div className='mb-12'>
+        <SideNavBottomSection />
+      </div>
     </div>
   );
 };
