@@ -18,7 +18,6 @@ const CreateTeam = () => {
   const router = useRouter();
   const convex = useConvex();
   const [teamName, setTeamName] = useState('');
-  const [loading, setLoading] = useState(true);
 
   const createTeam = useMutation(api.teams.createTeam);
 
@@ -26,9 +25,7 @@ const CreateTeam = () => {
     const timer = setTimeout(() => {
       if (!user) {
         router.push('/api/auth/login?redirect=/teams/create');
-      } else {
-        setLoading(false);
-      }
+      } 
     }, 2000);
     return () => clearTimeout(timer);
   }, [user, router]);
@@ -54,9 +51,7 @@ const CreateTeam = () => {
     });
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+
 
   return (
     <div className="px-6 lg:px-14 my-14">

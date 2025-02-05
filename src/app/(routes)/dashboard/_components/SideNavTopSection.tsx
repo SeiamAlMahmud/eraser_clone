@@ -7,15 +7,30 @@ import {
 } from '@/components/ui/popover';
 import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs';
 import { Separator } from '@/components/ui/separator';
+import Link from 'next/link';
+import { useConvex } from 'convex/react';
+import { api } from '../../../../../convex/_generated/api';
+import { useEffect, useState } from 'react';
 
-interface User {
+export interface User {
   picture: string | null;
   given_name: string | null;
   family_name: string | null;
   email: string | null;
 }
 
+export interface TEAM {
+  _id: string;
+  _creationTime: string;
+  createdBy: string;
+  teamName: string;
+}
+
 const SideNavTopSection = ({ user }: { user: User | null }) => {
+  const convex = useConvex();
+  const [teamList, setTeamList] = useState<TEAM[]>([]);
+  const [activeTeam, setActiveTeam] = useState<TEAM>();
+  console.log(teamList, 'teamList');
   const menus = [
     {
       id: 1,
@@ -30,6 +45,24 @@ const SideNavTopSection = ({ user }: { user: User | null }) => {
       icon: Settings,
     },
   ];
+
+  useEffect(() => {
+    if (user) {
+      getTeamList();
+    }
+  }, [user]);
+
+  const getTeamList = async () => {
+    try {
+      const result = await convex.query(api.teams.getTeam, {
+        email: user?.email || '',
+      });
+      setTeamList(result);
+      setActiveTeam(result[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Popover>
       <PopoverTrigger>
@@ -42,7 +75,7 @@ const SideNavTopSection = ({ user }: { user: User | null }) => {
             alt="logo"
           />
           <h2 className="whitespace-nowrap flex gap-1 text-[17px] font-bold">
-            Team Name
+            {activeTeam?.teamName || 'Loading...'}
             <ChevronDown />
           </h2>
         </div>
@@ -50,16 +83,33 @@ const SideNavTopSection = ({ user }: { user: User | null }) => {
       <PopoverContent className="ml-6 p-4">
         {/* Team Section  */}
         <div>
-          <h3 className="text-sm font-semibold">Team Name</h3>
+          {
+            // Team List
+            teamList &&
+              teamList.map((team) => {
+                return (
+                  <h3
+                    key={team._id}
+                    className={`text-sm font-semibold p-2 cursor-pointer hover:bg-blue-200 rounded hover:text-black ${activeTeam?._id == team?._id && 'bg-teal-200'}`}
+                    onClick={() => setActiveTeam(team)}
+                  >
+                    {team.teamName}
+                  </h3>
+                );
+              })
+          }
         </div>
         <div>
           <Separator className="mt-2 bg-slate-200" />
           {menus.map((menu) => (
             <div key={menu.id}>
-              <h2 className="flex gap-2 items-center p-2 hover:bg-gray-200 rounded-lg text-sm cursor-pointer">
-                <menu.icon height={20} width={20} />
-                {menu.name}
-              </h2>
+              <Link href={menu.path}>
+                {' '}
+                <h2 className="flex gap-2 items-center p-2 hover:bg-gray-200 rounded-lg text-sm cursor-pointer">
+                  <menu.icon height={20} width={20} />
+                  {menu.name}
+                </h2>
+              </Link>
             </div>
           ))}
 

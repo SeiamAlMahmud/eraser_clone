@@ -1,7 +1,7 @@
 'use client';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { useConvex } from 'convex/react';
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { api } from '../../../../convex/_generated/api';
 import { useRouter } from 'next/navigation';
 import SideNav from './_components/SideNav';
@@ -21,7 +21,6 @@ const DashboardLayout = ({
   const convex = useConvex();
   const { user }: { user: User | null } = useKindeBrowserClient();
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
   console.log(user, 'user');
 
   const checkTeam = useCallback(async () => {
@@ -44,8 +43,6 @@ const DashboardLayout = ({
     console.log(result, 'result5454');
     if (!result?.length) {
       router.push('/teams/create');
-    } else {
-      setLoading(false);
     }
   }, [convex, router, user]);
 
@@ -60,10 +57,6 @@ const DashboardLayout = ({
 
     return () => clearTimeout(timer);
   }, [checkTeam, user, router]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div>
