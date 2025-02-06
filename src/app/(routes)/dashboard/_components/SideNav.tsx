@@ -1,6 +1,8 @@
+import { useMutation } from 'convex/react';
 import SideNavBottomSection from './SideNavBottomSection';
 import SideNavTopSection from './SideNavTopSection';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
+import { api } from '../../../../../convex/_generated/api';
 
 export interface User {
   picture: string | null;
@@ -12,8 +14,14 @@ export interface User {
 const SideNav = () => {
   const { user }: { user: User | null } = useKindeBrowserClient();
 
+  const createFile = useMutation(api.files.createFile);
   const onFileCreate = (fileName: string) => {
     console.log(fileName);
+    // createFile({
+    //   fileName: fileName,
+    //   teamId:,
+    //   createdBy: user?.email
+    // })
   };
 
   return (
