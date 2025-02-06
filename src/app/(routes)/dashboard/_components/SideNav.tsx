@@ -5,6 +5,7 @@ import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { api } from '../../../../../convex/_generated/api';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { useFileList } from '@/app/_context/FileListContext';
 
 export interface User {
   picture: string | null;
@@ -19,6 +20,7 @@ const SideNav = () => {
   const [totalFiles, setTotalFiles] = useState<number>(0);
   const createFile = useMutation(api.files.createFile);
   const convex = useConvex();
+  const { setFileList_} = useFileList();
 
   useEffect(() => {
     if (activeTeam) {
@@ -61,6 +63,7 @@ const SideNav = () => {
         teamId: activeTeam?._id || '',
       });
       console.log(result, 'files');
+      setFileList_(result)
       setTotalFiles(result?.length);
     } catch (error) {
       console.log(error);
