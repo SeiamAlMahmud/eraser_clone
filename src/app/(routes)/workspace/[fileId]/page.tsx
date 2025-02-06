@@ -1,8 +1,11 @@
 import React from 'react'
+import WorkSpaceHeader from '../_components/WorkSpaceHeader';
 
 const WorkSpace = () => {
   return (
-    <div>WorkSpace</div>
+    <div>
+        <WorkSpaceHeader />
+    </div>
   )
 }
 
