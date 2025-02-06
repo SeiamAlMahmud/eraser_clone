@@ -56,7 +56,7 @@ const DashboardLayout = ({
     }, 2000);
 
     return () => clearTimeout(timer);
-  }, [checkTeam, user, router]);
+  }, [checkTeam, user]);
 
   return (
     <div>

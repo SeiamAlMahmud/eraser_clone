@@ -20,7 +20,13 @@ export interface TEAM {
   teamName: string;
 }
 
-const SideNavTopSection = ({ user }: { user: User | null }) => {
+const SideNavTopSection = ({
+  user,
+  activeTeamInfo,
+}: {
+  user: User | null;
+  activeTeamInfo: (team: TEAM) => void;
+}) => {
   const convex = useConvex();
   const [teamList, setTeamList] = useState<TEAM[]>([]);
   const [activeTeam, setActiveTeam] = useState<TEAM>();
@@ -45,13 +51,18 @@ const SideNavTopSection = ({ user }: { user: User | null }) => {
       getTeamList();
     }
   }, [user]);
+  useEffect(() => {
+    if (activeTeam) {
+      activeTeamInfo(activeTeam);
+    }
+  }, [activeTeam]);
   const getTeamList = async () => {
     try {
       const result = await convex.query(api.teams.getTeam, {
         email: user?.email || '',
       });
-      setTeamList(result);
-      setActiveTeam(result[0]);
+      setTeamList(result.slice().reverse()); // make new array then reverse it
+      setActiveTeam(result.slice().reverse()[0]);
     } catch (error) {
       console.log(error);
     }
@@ -97,10 +108,12 @@ const SideNavTopSection = ({ user }: { user: User | null }) => {
           <Separator className="mt-2 bg-slate-200" />
           {menus.map((menu) => (
             <div key={menu.id}>
-              <h2 className="flex gap-2 items-center p-2 hover:bg-gray-200 rounded-lg text-sm cursor-pointer">
-                <menu.icon height={20} width={20} />
-                {menu.name}
-              </h2>
+              <Link href={menu.path}>
+                <h2 className="flex gap-2 items-center p-2 hover:bg-gray-200 rounded-lg text-sm cursor-pointer">
+                  <menu.icon height={20} width={20} />
+                  {menu.name}
+                </h2>
+              </Link>
             </div>
           ))}
 
