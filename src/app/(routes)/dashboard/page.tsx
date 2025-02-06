@@ -41,7 +41,7 @@ const Dashboard = () => {
       });
     }
   };
-  return <div>page</div>;
+  return <div className='ml-40 sm:ml-20 lg:ml-8'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Recusandae, pi praesentium hic consectetur iusto explicabo omnis?</div>;
 };
 
 export default Dashboard;

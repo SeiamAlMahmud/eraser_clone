@@ -12,14 +12,17 @@ export interface User {
 const SideNav = () => {
   const { user }: { user: User | null } = useKindeBrowserClient();
 
- 
+  const onFileCreate = (fileName: string) => {
+    console.log(fileName);
+  };
+
   return (
     <div className=" h-screen fixed w-64 border-r p-6 flex flex-col">
-      <div className='flex-1'>
+      <div className="flex-1">
         <SideNavTopSection user={user} />
       </div>
-      <div className='mb-12'>
-        <SideNavBottomSection />
+      <div className="mb-12">
+        <SideNavBottomSection onFileCreate={onFileCreate} />
       </div>
     </div>
   );

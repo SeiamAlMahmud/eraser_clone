@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Archive, Flag, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 
-const SideNavBottomSection = () => {
+interface SideNavBottomSectionProps {
+  onFileCreate: (fileName: string) => void;
+}
+
+const SideNavBottomSection = ({ onFileCreate }: SideNavBottomSectionProps) => {
   const menuList = [
     {
       id: 1,
@@ -23,6 +38,7 @@ const SideNavBottomSection = () => {
       path: '',
     },
   ];
+  const [fileInput, setFileInput] = useState('');
   return (
     <div>
       {menuList.map((menu) => {
@@ -37,13 +53,45 @@ const SideNavBottomSection = () => {
         );
       })}
       {/* Add New File Button  */}
-      <Button className="w-full bg-blue-600 hover:bg-blue-700">New File</Button>
+
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button className="w-full bg-blue-600 hover:bg-blue-700 mt-2">
+            New File
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create New File</DialogTitle>
+            <DialogDescription>
+              <Input
+                onChange={(e) => setFileInput(e.target.value)}
+                className="mt-3"
+                placeholder="Enter File Name"
+              />
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="">
+            <DialogClose asChild>
+              <Button
+                type="button"
+                className="bg-blue-600 hover:bg-blue-700"
+                disabled={!(fileInput && fileInput.length > 0)}
+                onClick={() => onFileCreate(fileInput)}
+              >
+                Create
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {/* Progress Bar  */}
 
       <div className="bg-gray-200 h-4 mt-3 rounded-full mb-5">
         <div className="h-4 w-[40%] bg-blue-600 rounded-full"></div>
       </div>
-      <h2  className="text-[13px] mt-1 tracking-normal">
+      <h2 className="text-[13px] mt-1 tracking-normal">
         <strong>1</strong> out of <strong>5</strong> files used
       </h2>
       <h2 className="text-[12px] mt-1 tracking-tight">
