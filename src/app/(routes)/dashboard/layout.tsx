@@ -60,11 +60,11 @@ const DashboardLayout = ({
 
   return (
     <div>
-      <div className=" grid grid-cols-4">
-        <div>
+      <div className="grid grid-cols-4">
+        <div className='fixed h-screen w-72'>
           <SideNav />
         </div>
-        <div className="col-span-3">{children}</div>
+        <div className="col-span-4 ml-72">{children}</div>
       </div>
     </div>
   );
