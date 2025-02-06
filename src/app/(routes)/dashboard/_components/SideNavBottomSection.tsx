@@ -15,9 +15,13 @@ import { Input } from '@/components/ui/input';
 
 interface SideNavBottomSectionProps {
   onFileCreate: (fileName: string) => void;
+  totalFiles: number;
 }
 
-const SideNavBottomSection = ({ onFileCreate }: SideNavBottomSectionProps) => {
+const SideNavBottomSection = ({
+  onFileCreate,
+  totalFiles,
+}: SideNavBottomSectionProps) => {
   const menuList = [
     {
       id: 1,
@@ -89,10 +93,13 @@ const SideNavBottomSection = ({ onFileCreate }: SideNavBottomSectionProps) => {
       {/* Progress Bar  */}
 
       <div className="bg-gray-200 h-4 mt-3 rounded-full mb-5">
-        <div className="h-4 w-[40%] bg-blue-600 rounded-full"></div>
+        <div
+          className="h-4 bg-blue-600 rounded-full"
+          style={{ width: `${(totalFiles / 5) * 100}%` }}
+        ></div>
       </div>
       <h2 className="text-[13px] mt-1 tracking-normal">
-        <strong>1</strong> out of <strong>5</strong> files used
+        <strong>{totalFiles}</strong> out of <strong>5</strong> files used
       </h2>
       <h2 className="text-[12px] mt-1 tracking-tight">
         Upgrade your plan for unlimited access.

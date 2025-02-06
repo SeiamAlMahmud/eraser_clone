@@ -1,9 +1,9 @@
-import { useMutation } from 'convex/react';
+import { useConvex, useMutation } from 'convex/react';
 import SideNavBottomSection from './SideNavBottomSection';
 import SideNavTopSection, { TEAM } from './SideNavTopSection';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { api } from '../../../../../convex/_generated/api';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 export interface User {
@@ -16,7 +16,15 @@ export interface User {
 const SideNav = () => {
   const { user }: { user: User | null } = useKindeBrowserClient();
   const [activeTeam, setActiveTeam] = useState<TEAM>();
+  const [totalFiles, setTotalFiles] = useState<number>(0);
   const createFile = useMutation(api.files.createFile);
+  const convex = useConvex();
+
+  useEffect(() => {
+    if (activeTeam) {
+      getFiles();
+    }
+  }, [activeTeam]);
   const onFileCreate = (fileName: string) => {
     console.log({
       fileName,
@@ -26,17 +34,18 @@ const SideNav = () => {
       document: '',
       whiteboard: '',
     });
-    
+
     createFile({
       fileName: fileName,
       teamId: activeTeam?._id || '',
       createdBy: user?.email || '',
-      archive: false, 
+      archive: false,
       document: '',
       whiteboard: '',
     }).then(
       (res) => {
         if (res) {
+          getFiles();
           toast('New File has been created.');
         }
       },
@@ -44,6 +53,18 @@ const SideNav = () => {
         toast('Error while Creating file. | ', err);
       }
     );
+  };
+
+  const getFiles = async () => {
+    try {
+      const result = await convex.query(api.files.getFiles, {
+        teamId: activeTeam?._id || '',
+      });
+      console.log(result, 'files');
+      setTotalFiles(result?.length);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -55,7 +76,10 @@ const SideNav = () => {
         />
       </div>
       <div className="mb-12">
-        <SideNavBottomSection onFileCreate={onFileCreate} />
+        <SideNavBottomSection
+          totalFiles={totalFiles}
+          onFileCreate={onFileCreate}
+        />
       </div>
     </div>
   );
