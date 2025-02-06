@@ -18,11 +18,22 @@ const SideNav = () => {
   const [activeTeam, setActiveTeam] = useState<TEAM>();
   const createFile = useMutation(api.files.createFile);
   const onFileCreate = (fileName: string) => {
-    console.log(fileName);
+    console.log({
+      fileName,
+      teamId: activeTeam?._id || '',
+      createdBy: user?.email || '',
+      archive: false,
+      document: '',
+      whiteboard: '',
+    });
+    
     createFile({
       fileName: fileName,
       teamId: activeTeam?._id || '',
       createdBy: user?.email || '',
+      archive: false, 
+      document: '',
+      whiteboard: '',
     }).then(
       (res) => {
         if (res) {
@@ -30,7 +41,7 @@ const SideNav = () => {
         }
       },
       (err) => {
-        toast('Error while Creating file. | ', err?.message);
+        toast('Error while Creating file. | ', err);
       }
     );
   };
