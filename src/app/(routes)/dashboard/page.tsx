@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { api } from '../../../../convex/_generated/api';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import Header from './_components/Header';
+import FileList from './_components/FileList';
 
 interface User {
   given_name: string | null;
@@ -42,9 +43,12 @@ const Dashboard = () => {
       });
     }
   };
-  return <div className='ml-5 m-4'>
-  <Header user={user} />
-  </div>;
+  return (
+    <div className="ml-5 m-4">
+      <Header user={user} />
+      <FileList />
+    </div>
+  );
 };
 
 export default Dashboard;
