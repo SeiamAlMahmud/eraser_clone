@@ -10,15 +10,16 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useRouter } from 'next/navigation';
 
 const FileList = () => {
   const { fileLlist_ } = useFileList();
   const [fileList, setFileList] = useState<FILE[]>([]);
   const { user }: { user: User | null } = useKindeBrowserClient();
+  const router = useRouter();
 
   useEffect(() => {
     if (fileLlist_) {
@@ -51,7 +52,8 @@ const FileList = () => {
             {fileList &&
               fileList.map((file, index) => (
                 <tr key={index} className="odd:bg-gray-50">
-                  <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                  <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 cursor-pointer"
+                  onClick={()=> router.push(`/workspace/${file._id}`)}>
                     {file.fileName}
                   </td>
                   <td className="whitespace-nowrap px-4 py-2 text-gray-700">
@@ -80,12 +82,6 @@ const FileList = () => {
                           <Archive className="h-4 w-4" />
                           Archive
                         </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>Billing</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>Team</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>Subscription</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </td>
