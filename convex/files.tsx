@@ -7,7 +7,7 @@ export const createFile = mutation({
     teamId: v.string(),
     createdBy: v.string(),
     archive: v.optional(v.boolean()),
-    document: v.optional(v.string()),
+    document: v.optional(v.any()),
     whiteboard: v.optional(v.string()),
   },
   handler: async (ctx, args_0) => {
@@ -34,12 +34,23 @@ export const getFiles = query({
 export const updateDocument = mutation({
   args: {
     _id: v.id('files'),
-    document: v.string(),
+    document: v.any(),
   },
   handler: async (ctx, args) => {
     const result = await ctx.db.patch(args._id, {
       document: args.document,
     });
+    return result;
+  },
+});
+
+
+export const getFileById = query({
+  args: {
+    _id: v.id('files'),
+  },
+  handler: async (ctx, args) => {
+    const result = await ctx.db.get(args._id);
     return result;
   },
 });

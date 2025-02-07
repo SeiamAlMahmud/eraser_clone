@@ -19,6 +19,7 @@ import { useMutation } from 'convex/react';
 import { api } from '../../../../../convex/_generated/api';
 import { Id } from '../../../../../convex/_generated/dataModel';
 import { toast } from 'sonner';
+import { FILE } from '@/app/_context/FileListContext';
 type BlockType = 'paragraph' | 'header' | 'list' | 'quote';
 
 type BlockData =
@@ -63,14 +64,19 @@ const rawDocument: EditorDocument = {
 interface EditorProps {
   triggerSave: boolean;
   fileId: string;
+  fileData: FILE;
 }
-const Editor: React.FC<EditorProps> = ({ triggerSave, fileId }) => {
+const Editor: React.FC<EditorProps> = ({ triggerSave, fileId, fileData }) => {
   const ref = useRef<EditorJS | null>(null);
-  const [document] = useState(rawDocument);
+  const [document] = useState<EditorDocument>(rawDocument);
   const updateDocument = useMutation(api.files.updateDocument);
   useEffect(() => {
-    initEditor();
-  }, []);
+
+    if (fileData.document) {
+      initEditor();
+    }
+   
+  }, [fileData]);
 
   useEffect(() => {
     console.log(triggerSave, 'triggerSave');
@@ -100,7 +106,7 @@ const Editor: React.FC<EditorProps> = ({ triggerSave, fileId }) => {
   const initEditor = () => {
     const editor = new EditorJS({
       holder: 'editorjs',
-      data: document,
+      data: typeof fileData.document === 'string' ? JSON.parse(fileData.document) : fileData.document || document,
       tools: {
         header: {
           class: Header as unknown as BlockToolConstructable,
@@ -178,9 +184,11 @@ const Editor: React.FC<EditorProps> = ({ triggerSave, fileId }) => {
         .save()
         .then((outputData) => {
           console.log('Article data: ', outputData);
+          console.log('JSON Article data: ', JSON.parse(JSON.stringify(outputData)));
+
           updateDocument({
             _id: fileId as Id<'files'>,
-            document: JSON.stringify(outputData),
+            document: outputData,
           })
             .then(() => {
               toast('Document saved successfully');
