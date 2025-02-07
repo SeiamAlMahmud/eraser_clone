@@ -17,7 +17,9 @@ import Paragraph from '@editorjs/paragraph';
 import Quote from '@editorjs/quote';
 import Title from 'title-editorjs';
 import ColorPicker from 'editorjs-color-picker';
-
+import { useMutation } from 'convex/react';
+import { api } from '../../../../../convex/_generated/api';
+import { Id } from '../../../../../convex/_generated/dataModel';
 type BlockType = 'paragraph' | 'header' | 'list' | 'quote';
 
 type BlockData =
@@ -61,14 +63,16 @@ const rawDocument: EditorDocument = {
 
 interface EditorProps {
   triggerSave: boolean;
+  fileId: string;
 }
-const Editor: React.FC<EditorProps> = ({ triggerSave }) => {
+const Editor: React.FC<EditorProps> = ({ triggerSave, fileId }) => {
   const ref = useRef<EditorJS | null>(null);
-  const [document, setDocument] = useState(rawDocument);
+  const [document] = useState(rawDocument);
+  const updateDocument = useMutation(api.files.updateDocument);
   useEffect(() => {
     initEditor();
   }, []);
-  console.log(setDocument);
+
   useEffect(() => {
     console.log(triggerSave, 'triggerSave');
     if (triggerSave) {
@@ -77,17 +81,15 @@ const Editor: React.FC<EditorProps> = ({ triggerSave }) => {
   }, [triggerSave]);
 
   useEffect(() => {
-    if (!ref.current) {
-      initEditor();
-    }
+    initEditor();
 
     return () => {
-      if (ref.current) {
-        ref.current.destroy(); // Cleanup on unmount
-        ref.current = null;
+      if (ref.current && typeof ref.current.destroy === 'function') {
+        ref.current.destroy(); // Properly cleanup if 'destroy' exists
       }
+      ref.current = null;
     };
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once on mount/unmount
 
   const handleReady = (editor) => {
     new Undo({ editor });
@@ -175,6 +177,10 @@ const Editor: React.FC<EditorProps> = ({ triggerSave }) => {
         .save()
         .then((outputData) => {
           console.log('Article data: ', outputData);
+          updateDocument({
+            _id: fileId as Id<'files'>,
+            document: JSON.stringify(outputData),
+          });
         })
         .catch((error) => {
           console.log('Saving failed: ', error);
