@@ -18,13 +18,13 @@ import Quote from '@editorjs/quote';
 import Title from 'title-editorjs';
 import ColorPicker from 'editorjs-color-picker';
 
-type BlockType = "paragraph" | "header" | "list" | "quote";
+type BlockType = 'paragraph' | 'header' | 'list' | 'quote';
 
-type BlockData = 
+type BlockData =
   | { text: string; level?: number } // Header Block
   | { text: string } // Paragraph Block
-  | { items: string[]; style: "unordered" | "ordered" } // List Block
-  | { text: string; caption?: string } // Quote Block;
+  | { items: string[]; style: 'unordered' | 'ordered' } // List Block
+  | { text: string; caption?: string }; // Quote Block;
 
 type EditorDocument = {
   time: number;
@@ -40,32 +40,41 @@ const rawDocument: EditorDocument = {
   time: 1550476186479,
   blocks: [
     {
-      id: "123",
-      type: "header",
+      id: '123',
+      type: 'header',
       data: {
-        text: "Document Name",
+        text: 'Document Name',
         level: 2,
       },
     },
     {
-      id: "1234",
-      type: "header",
+      id: '1234',
+      type: 'header',
       data: {
-        text: "",
+        text: '',
         level: 4,
       },
     },
   ],
-  version: "2.8.1",
+  version: '2.8.1',
 };
 
-
-const Editor = () => {
+interface EditorProps {
+  triggerSave: boolean;
+}
+const Editor: React.FC<EditorProps> = ({ triggerSave }) => {
   const ref = useRef<EditorJS | null>(null);
   const [document, setDocument] = useState(rawDocument);
   useEffect(() => {
     initEditor();
   }, []);
+console.log(setDocument)
+  useEffect(() => {
+    console.log(triggerSave, 'triggerSave');
+    if (triggerSave) {
+      onSaveDocumet();
+    }
+  }, [triggerSave]);
 
   useEffect(() => {
     if (!ref.current) {
@@ -95,7 +104,7 @@ const Editor = () => {
           shortcut: 'CMD+SHIFT+H',
           config: {
             placeholder: 'Enter a header',
-            levels: [1,2, 3, 4,5,6],
+            levels: [1, 2, 3, 4, 5, 6],
             defaultLevel: 2,
           },
         },
@@ -158,6 +167,20 @@ const Editor = () => {
     ref.current = editor;
   };
 
+  const onSaveDocumet = () => {
+    if (ref.current) {
+      // const editor = new EditorJS(); unsued line
+
+      ref.current
+        .save()
+        .then((outputData) => {
+          console.log('Article data: ', outputData);
+        })
+        .catch((error) => {
+          console.log('Saving failed: ', error);
+        });
+    }
+  };
   return (
     <div>
       <div id="editorjs" className="ml-5"></div>
