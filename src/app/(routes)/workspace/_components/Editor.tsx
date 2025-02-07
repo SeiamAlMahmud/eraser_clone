@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { BlockToolConstructable } from '@editorjs/editorjs';
 // @ts-nocheck
 import EditorJS from '@editorjs/editorjs';
@@ -18,13 +18,54 @@ import Quote from '@editorjs/quote';
 import Title from 'title-editorjs';
 import ColorPicker from 'editorjs-color-picker';
 
+type BlockType = "paragraph" | "header" | "list" | "quote";
+
+type BlockData = 
+  | { text: string; level?: number } // Header Block
+  | { text: string } // Paragraph Block
+  | { items: string[]; style: "unordered" | "ordered" } // List Block
+  | { text: string; caption?: string } // Quote Block;
+
+type EditorDocument = {
+  time: number;
+  blocks: Array<{
+    id?: string;
+    type: BlockType;
+    data: BlockData;
+  }>;
+  version: string;
+};
+
+const rawDocument: EditorDocument = {
+  time: 1550476186479,
+  blocks: [
+    {
+      id: "123",
+      type: "header",
+      data: {
+        text: "Document Name",
+        level: 2,
+      },
+    },
+    {
+      id: "1234",
+      type: "header",
+      data: {
+        text: "",
+        level: 4,
+      },
+    },
+  ],
+  version: "2.8.1",
+};
+
+
 const Editor = () => {
- 
   const ref = useRef<EditorJS | null>(null);
+  const [document, setDocument] = useState(rawDocument);
   useEffect(() => {
     initEditor();
   }, []);
-
 
   useEffect(() => {
     if (!ref.current) {
@@ -47,14 +88,15 @@ const Editor = () => {
   const initEditor = () => {
     const editor = new EditorJS({
       holder: 'editorjs',
+      data: document,
       tools: {
         header: {
           class: Header as unknown as BlockToolConstructable,
           shortcut: 'CMD+SHIFT+H',
           config: {
             placeholder: 'Enter a header',
-            levels: [2, 3, 4],
-            defaultLevel: 3,
+            levels: [1,2, 3, 4,5,6],
+            defaultLevel: 2,
           },
         },
         list: {
