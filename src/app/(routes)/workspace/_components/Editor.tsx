@@ -19,7 +19,7 @@ import Title from 'title-editorjs';
 import ColorPicker from 'editorjs-color-picker';
 import { useMutation } from 'convex/react';
 import { api } from '../../../../../convex/_generated/api';
-import {  Id } from '../../../../../convex/_generated/dataModel';
+import { Id } from '../../../../../convex/_generated/dataModel';
 import { toast } from 'sonner';
 type BlockType = 'paragraph' | 'header' | 'list' | 'quote';
 
@@ -81,7 +81,6 @@ const Editor: React.FC<EditorProps> = ({ triggerSave, fileId }) => {
     }
   }, [triggerSave]);
 
-  
   // useEffect(() => {
   //   if (!ref.current) {
   //     initEditor();
@@ -182,17 +181,16 @@ const Editor: React.FC<EditorProps> = ({ triggerSave, fileId }) => {
         .then((outputData) => {
           console.log('Article data: ', outputData);
           updateDocument({
-            _id: fileId as Id<"files">,
+            _id: fileId as Id<'files'>,
             document: JSON.stringify(outputData),
-          }).then((res) => {
-            if (res) {
-              toast('Document saved successfully');
-            }
           })
-          .catch((err) => {
-            toast('Server Error');
-            console.error('Error updating document:', err);
-          });
+            .then(() => {
+              toast('Document saved successfully');
+            })
+            .catch((err) => {
+              toast('Server Error');
+              console.error('Error updating document:', err);
+            });
         })
         .catch((error) => {
           console.log('Saving failed: ', error);

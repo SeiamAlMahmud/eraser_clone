@@ -21,8 +21,8 @@ h6.ce-header {
   @apply text-base font-bold;
 }
 
-.cdx-input{
-  background-color: black !important;
+.cdx-input {
+  background: linear-gradient(to right, #6b46c1, #6366f1, #3b82f6) !important;
 }
 
 body {
