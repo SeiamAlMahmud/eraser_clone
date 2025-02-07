@@ -68,7 +68,7 @@ const Editor: React.FC<EditorProps> = ({ triggerSave }) => {
   useEffect(() => {
     initEditor();
   }, []);
-console.log(setDocument)
+  console.log(setDocument);
   useEffect(() => {
     console.log(triggerSave, 'triggerSave');
     if (triggerSave) {

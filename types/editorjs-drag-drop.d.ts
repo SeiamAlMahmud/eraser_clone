@@ -1,5 +1,4 @@
 declare module 'editorjs-drag-drop' {
-    const DragDrop: any;
-    export default DragDrop;
-  }
-  
+  const DragDrop: any;
+  export default DragDrop;
+}

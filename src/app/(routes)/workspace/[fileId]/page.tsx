@@ -1,10 +1,10 @@
-"use client";
+'use client';
 import React, { useState } from 'react';
 import WorkSpaceHeader from '../_components/WorkSpaceHeader';
 import Editor from '../_components/Editor';
 
 const WorkSpace = () => {
-  const [triggerSave, setTriggerSave] = useState(false)
+  const [triggerSave, setTriggerSave] = useState(false);
   return (
     <div>
       <WorkSpaceHeader onSave={() => setTriggerSave(!triggerSave)} />

@@ -25,7 +25,7 @@ const CreateTeam = () => {
     const timer = setTimeout(() => {
       if (!user) {
         router.push('/api/auth/login?redirect=/teams/create');
-      } 
+      }
     }, 2000);
     return () => clearTimeout(timer);
   }, [user, router]);
@@ -50,8 +50,6 @@ const CreateTeam = () => {
       router.push('/dashboard');
     });
   };
-
-
 
   return (
     <div className="px-6 lg:px-14 my-14">

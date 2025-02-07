@@ -20,7 +20,7 @@ const SideNav = () => {
   const [totalFiles, setTotalFiles] = useState<number>(0);
   const createFile = useMutation(api.files.createFile);
   const convex = useConvex();
-  const { setFileList_} = useFileList();
+  const { setFileList_ } = useFileList();
 
   useEffect(() => {
     if (activeTeam) {
@@ -63,7 +63,7 @@ const SideNav = () => {
         teamId: activeTeam?._id || '',
       });
       console.log(result, 'files');
-      setFileList_(result)
+      setFileList_(result);
       setTotalFiles(result?.length);
     } catch (error) {
       console.log(error);
