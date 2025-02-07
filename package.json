@@ -11,10 +11,8 @@
   },
   "dependencies": {
     "@bomdi/codebox": "^2.0.0",
-    "@editorjs/checklist": "^1.6.0",
     "@editorjs/editorjs": "^2.30.8",
     "@editorjs/header": "^2.8.8",
-    "@editorjs/image": "^2.10.2",
     "@editorjs/inline-code": "^1.5.1",
     "@editorjs/list": "^2.0.4",
     "@editorjs/marker": "^1.4.0",
