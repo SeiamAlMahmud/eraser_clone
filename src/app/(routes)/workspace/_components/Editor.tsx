@@ -19,7 +19,8 @@ import Title from 'title-editorjs';
 import ColorPicker from 'editorjs-color-picker';
 import { useMutation } from 'convex/react';
 import { api } from '../../../../../convex/_generated/api';
-import { Id } from '../../../../../convex/_generated/dataModel';
+import {  Id } from '../../../../../convex/_generated/dataModel';
+import { toast } from 'sonner';
 type BlockType = 'paragraph' | 'header' | 'list' | 'quote';
 
 type BlockData =
@@ -80,16 +81,19 @@ const Editor: React.FC<EditorProps> = ({ triggerSave, fileId }) => {
     }
   }, [triggerSave]);
 
-  useEffect(() => {
-    initEditor();
+  
+  // useEffect(() => {
+  //   if (!ref.current) {
+  //     initEditor();
+  //   }
 
-    return () => {
-      if (ref.current && typeof ref.current.destroy === 'function') {
-        ref.current.destroy(); // Properly cleanup if 'destroy' exists
-      }
-      ref.current = null;
-    };
-  }, []); // Empty dependency array ensures this runs only once on mount/unmount
+  //   // return () => {
+  //   //   if (ref.current) {
+  //   //     ref.current.destroy(); // Cleanup on unmount
+  //   //     ref.current = null;
+  //   //   }
+  //   // };
+  // }, []);
 
   const handleReady = (editor) => {
     new Undo({ editor });
@@ -178,8 +182,16 @@ const Editor: React.FC<EditorProps> = ({ triggerSave, fileId }) => {
         .then((outputData) => {
           console.log('Article data: ', outputData);
           updateDocument({
-            _id: fileId as Id<'files'>,
+            _id: fileId as Id<"files">,
             document: JSON.stringify(outputData),
+          }).then((res) => {
+            if (res) {
+              toast('Document saved successfully');
+            }
+          })
+          .catch((err) => {
+            toast('Server Error');
+            console.error('Error updating document:', err);
           });
         })
         .catch((error) => {

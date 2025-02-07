@@ -21,6 +21,10 @@ h6.ce-header {
   @apply text-base font-bold;
 }
 
+.cdx-input{
+  background-color: black !important;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
